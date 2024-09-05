@@ -9,8 +9,10 @@ class Giveaway {
   final String description;
   final String instructions;
   final String openGiveawayUrl;
+  final String publishedDate;
   final String type;
   final String platforms;
+  final String endDate;
   final int users;
   final String status;
   final String gamerpowerUrl;
@@ -25,8 +27,10 @@ class Giveaway {
     required this.description,
     required this.instructions,
     required this.openGiveawayUrl,
+    required this.publishedDate,
     required this.type,
     required this.platforms,
+    required this.endDate,
     required this.users,
     required this.status,
     required this.gamerpowerUrl,
@@ -47,8 +51,10 @@ class Giveaway {
         description: json["description"],
         instructions: json["instructions"],
         openGiveawayUrl: json["open_giveaway_url"],
+        publishedDate: json["published_date"],
         type: json["type"],
         platforms: json["platforms"],
+        endDate: json["end_date"],
         users: json["users"],
         status: json["status"],
         gamerpowerUrl: json["gamerpower_url"],
@@ -64,8 +70,10 @@ class Giveaway {
         "description": description,
         "instructions": instructions,
         "open_giveaway_url": openGiveawayUrl,
+        "published_date": publishedDate,
         "type": type,
         "platforms": platforms,
+        "end_date": endDate,
         "users": users,
         "status": status,
         "gamerpower_url": gamerpowerUrl,

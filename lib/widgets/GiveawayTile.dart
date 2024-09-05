@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:free_game_notifier_app/widgets/CustomButton.dart';
 
 class GiveawayTile extends StatelessWidget {
   final String imageUrl;
@@ -15,12 +16,8 @@ class GiveawayTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 10.0,
+    return Container(
       margin: EdgeInsets.all(16.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -38,54 +35,59 @@ class GiveawayTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                Center(
+                  child: Container(
+                    color: Colors.black,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontFamily: "NewAmsterdam"),
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(height: 8.0),
-                Text(
-                  worth,
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.green,
-                    fontWeight: FontWeight.w600,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      worth,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.red,
+                        decoration: TextDecoration.lineThrough,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "Free",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.green,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 16.0),
                 Text(
                   description,
                   style: TextStyle(
-                    fontSize: 14.0,
-                    color: Colors.grey[700],
-                  ),
+                      fontSize: 14.0,
+                      color: Colors.grey[700],
+                      fontFamily: "Gabarito"),
                   maxLines: 4,
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent, // Button color
-                    foregroundColor: Colors.white, // Text color
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    padding:
-                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-                    elevation: 5.0,
-                  ),
-                  child: Text(
-                    'Get Giveaway',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                const SizedBox(height: 16.0),
+                CustomButton(text: "Grab The Loot 💸", onPress: () {})
               ],
             ),
           ),

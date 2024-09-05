@@ -47,7 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         drawer: CustomDrawer(),
         appBar: AppBar(
-          title: Text('GamerPower Giveaways'),
+          centerTitle: true,
+          title: Text(
+            'LootScoop',
+            style: TextStyle(fontSize: 30, fontFamily: "Debug"),
+          ),
         ),
         body: isLoading
             ? Center(
@@ -56,11 +60,21 @@ class _HomeScreenState extends State<HomeScreen> {
             : ListView.builder(
                 itemCount: gameGiveaways.length,
                 itemBuilder: (context, index) {
-                  return GiveawayTile(
-                    description: gameGiveaways[index].description,
-                    title: gameGiveaways[index].title,
-                    imageUrl: gameGiveaways[index].image,
-                    worth: gameGiveaways[index].worth,
+                  return Column(
+                    children: [
+                      GiveawayTile(
+                        description: gameGiveaways[index].description,
+                        title: gameGiveaways[index].title,
+                        imageUrl: gameGiveaways[index].image,
+                        worth: gameGiveaways[index].worth,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Divider(
+                        color: Colors.grey,
+                      )
+                    ],
                   );
                 }));
   }
