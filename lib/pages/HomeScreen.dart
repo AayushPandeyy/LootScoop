@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:free_game_notifier_app/model/Giveaway.dart';
 import 'package:free_game_notifier_app/services/GiveawayService.dart';
+import 'package:free_game_notifier_app/widgets/CustomDrawer.dart';
 import 'package:free_game_notifier_app/widgets/GiveawayTile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -44,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: CustomDrawer(),
         appBar: AppBar(
           title: Text('GamerPower Giveaways'),
         ),
