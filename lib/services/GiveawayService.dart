@@ -4,8 +4,7 @@ import 'package:free_game_notifier_app/model/Giveaway.dart';
 import 'package:http/http.dart' as http;
 
 class GiveawayService {
-  Future<List<Giveaway>> getAllGiveaways() async {
-    const url = "https://www.gamerpower.com/api/giveaways";
+  Future<List<Giveaway>> getAllGiveaways(String url) async {
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {

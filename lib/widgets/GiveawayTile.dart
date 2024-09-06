@@ -1,21 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:free_game_notifier_app/widgets/CustomButton.dart';
+import 'package:intl/intl.dart';
 
 class GiveawayTile extends StatelessWidget {
   final String imageUrl;
   final String title;
   final String worth;
   final String description;
+  final String endDate;
 
   const GiveawayTile(
       {super.key,
       required this.imageUrl,
       required this.title,
       required this.worth,
-      required this.description});
+      required this.description,
+      required this.endDate});
+
+  String formatDuration(Duration duration) {
+    print(duration.inDays);
+    if (duration.inDays > 0) {
+      return '${duration.inDays} days';
+    } else if (duration.inHours > 0) {
+      return '${duration.inHours} hours';
+    } else if (duration.inMinutes > 0) {
+      return '${duration.inMinutes} minutes';
+    } else {
+      return '${duration.inSeconds} seconds';
+    }
+
+    // Combine all non-empty parts
+  }
 
   @override
   Widget build(BuildContext context) {
+    String endDateString;
+    // Get the current date-time
+    if (endDate != "N/A") {
+      final format = DateFormat("yyyy-MM-dd HH:mm:ss");
+      String givenDateTime =
+          DateFormat("yyyy-MM-dd HH:mm:ss").format(format.parse(endDate));
+      DateTime now = DateTime.now();
+      Duration difference = DateTime.parse(givenDateTime).difference(now);
+      endDateString = formatDuration(difference);
+    } else {
+      endDateString = "";
+    }
+
+    // Calculate the difference
     return Container(
       margin: EdgeInsets.all(16.0),
       child: Column(
@@ -77,6 +109,17 @@ class GiveawayTile extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 16.0),
+                endDate != "N/A"
+                    ? Text(
+                        "Ends In : ${endDateString}",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.red,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      )
+                    : Container(),
+                SizedBox(height: 16.0),
                 Text(
                   description,
                   style: TextStyle(
@@ -87,7 +130,12 @@ class GiveawayTile extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 16.0),
-                CustomButton(text: "Grab The Loot 💸", onPress: () {})
+                CustomButton(
+                  text: "Grab The Loot 💸",
+                  onPress: () {},
+                  width: MediaQuery.sizeOf(context).width * 0.4,
+                  height: 50,
+                )
               ],
             ),
           ),

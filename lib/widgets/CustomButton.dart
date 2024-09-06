@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPress;
-  const CustomButton({super.key, required this.text, required this.onPress});
+  final double width;
+  final double height;
+  const CustomButton({super.key, required this.text, required this.onPress, required this.width, required this.height});
 
   @override
   Widget build(BuildContext context) {
@@ -12,9 +14,9 @@ class CustomButton extends StatelessWidget {
         onPress();
       },
       child: Container(
-        height: 50,
+        height: height,
         // width: 175,
-        width: MediaQuery.sizeOf(context).width * 0.4,
+        width: width,
         decoration: BoxDecoration(
             border: Border.all(color: Colors.red),
             borderRadius: BorderRadius.circular(10)),

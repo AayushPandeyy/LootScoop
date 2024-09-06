@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:free_game_notifier_app/model/Giveaway.dart';
 import 'package:free_game_notifier_app/services/GiveawayService.dart';
+import 'package:free_game_notifier_app/widgets/CustomButton.dart';
 import 'package:free_game_notifier_app/widgets/CustomDrawer.dart';
 import 'package:free_game_notifier_app/widgets/GiveawayTile.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,15 +21,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    fetchAllGiveaways();
+    fetchAllGiveaways(url);
   }
 
-  void fetchAllGiveaways() async {
+  String url = "https://www.gamerpower.com/api/giveaways";
+  void fetchAllGiveaways(String url) async {
     try {
       setState(() {
         isLoading = true;
       });
-      final data = await service.getAllGiveaways();
+      final data = await service.getAllGiveaways(url);
       setState(() {
         giveaways = data;
         gameGiveaways = giveaways.where((ga) => ga.type == "Game").toList();
@@ -44,6 +44,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> _types = ["Game", "Loot", "Beta release"];
+    final List<String> platforms = [
+      'PC',
+      'Steam',
+      'Epic Games Store',
+      'itch.io',
+      'GOG',
+      'Xbox One',
+      'PS4',
+      'Nintendo',
+      'Android',
+      'iOS',
+      'DRM-Free',
+    ];
+
+    // Selected dropdown item
+    String? _selectedType = "";
+    String? _selectedPlatform = "";
     return Scaffold(
         drawer: CustomDrawer(),
         appBar: AppBar(
@@ -57,25 +75,32 @@ class _HomeScreenState extends State<HomeScreen> {
             ? Center(
                 child: CircularProgressIndicator(),
               )
-            : ListView.builder(
-                itemCount: gameGiveaways.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      GiveawayTile(
-                        description: gameGiveaways[index].description,
-                        title: gameGiveaways[index].title,
-                        imageUrl: gameGiveaways[index].image,
-                        worth: gameGiveaways[index].worth,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Divider(
-                        color: Colors.grey,
-                      )
-                    ],
-                  );
-                }));
+            : Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: gameGiveaways.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              GiveawayTile(
+                                endDate: gameGiveaways[index].end_date,
+                                description: gameGiveaways[index].description,
+                                title: gameGiveaways[index].title,
+                                imageUrl: gameGiveaways[index].image,
+                                worth: gameGiveaways[index].worth,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Divider(
+                                color: Colors.grey,
+                              )
+                            ],
+                          );
+                        }),
+                  ),
+                ],
+              ));
   }
 }
