@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:free_game_notifier_app/model/Giveaway.dart';
 import 'package:free_game_notifier_app/services/GiveawayService.dart';
-import 'package:free_game_notifier_app/widgets/CustomButton.dart';
-import 'package:free_game_notifier_app/widgets/CustomDrawer.dart';
 import 'package:free_game_notifier_app/widgets/GiveawayTile.dart';
+
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,11 +21,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    fetchAllGiveaways(url);
+    fetchAllGiveaways();
   }
 
   String url = "https://www.gamerpower.com/api/giveaways";
-  void fetchAllGiveaways(String url) async {
+  void fetchAllGiveaways() async {
     try {
       setState(() {
         isLoading = true;
@@ -44,26 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> _types = ["Game", "Loot", "Beta release"];
-    final List<String> platforms = [
-      'PC',
-      'Steam',
-      'Epic Games Store',
-      'itch.io',
-      'GOG',
-      'Xbox One',
-      'PS4',
-      'Nintendo',
-      'Android',
-      'iOS',
-      'DRM-Free',
-    ];
-
-    // Selected dropdown item
-    String? _selectedType = "";
-    String? _selectedPlatform = "";
     return Scaffold(
-        drawer: CustomDrawer(),
         appBar: AppBar(
           centerTitle: true,
           title: Text(
@@ -78,27 +59,34 @@ class _HomeScreenState extends State<HomeScreen> {
             : Column(
                 children: [
                   Expanded(
-                    child: ListView.builder(
-                        itemCount: gameGiveaways.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              GiveawayTile(
-                                endDate: gameGiveaways[index].end_date,
-                                description: gameGiveaways[index].description,
-                                title: gameGiveaways[index].title,
-                                imageUrl: gameGiveaways[index].image,
-                                worth: gameGiveaways[index].worth,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Divider(
-                                color: Colors.grey,
-                              )
-                            ],
-                          );
-                        }),
+                    child: RefreshIndicator(
+                      color: Colors.red,
+                      onRefresh: () async {
+                        fetchAllGiveaways();
+                      },
+                      child: ListView.builder(
+                          itemCount: gameGiveaways.length,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: [
+                                GiveawayTile(
+                                  endDate: gameGiveaways[index].end_date,
+                                  description: gameGiveaways[index].description,
+                                  title: gameGiveaways[index].title,
+                                  imageUrl: gameGiveaways[index].image,
+                                  worth: gameGiveaways[index].worth,
+                                  url: gameGiveaways[index].openGiveawayUrl,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Divider(
+                                  color: Colors.grey,
+                                )
+                              ],
+                            );
+                          }),
+                    ),
                   ),
                 ],
               ));

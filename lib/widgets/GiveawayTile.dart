@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:free_game_notifier_app/widgets/CustomButton.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GiveawayTile extends StatelessWidget {
   final String imageUrl;
@@ -8,6 +9,7 @@ class GiveawayTile extends StatelessWidget {
   final String worth;
   final String description;
   final String endDate;
+  final String url;
 
   const GiveawayTile(
       {super.key,
@@ -15,10 +17,10 @@ class GiveawayTile extends StatelessWidget {
       required this.title,
       required this.worth,
       required this.description,
-      required this.endDate});
+      required this.endDate,
+      required this.url});
 
   String formatDuration(Duration duration) {
-    print(duration.inDays);
     if (duration.inDays > 0) {
       return '${duration.inDays} days';
     } else if (duration.inHours > 0) {
@@ -34,6 +36,12 @@ class GiveawayTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> _launchUrl(Uri url) async {
+      if (!await launchUrl(url)) {
+        throw Exception('Could not launch $url');
+      }
+    }
+
     String endDateString;
     // Get the current date-time
     if (endDate != "N/A") {
@@ -49,12 +57,13 @@ class GiveawayTile extends StatelessWidget {
 
     // Calculate the difference
     return Container(
-      margin: EdgeInsets.all(16.0),
+      margin: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           ClipRRect(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+            borderRadius:
+                const BorderRadius.vertical(top: Radius.circular(20.0)),
             child: Image.network(
               imageUrl,
               width: double.infinity,
@@ -73,17 +82,18 @@ class GiveawayTile extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
+                        textAlign: TextAlign.center,
                         title,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
-                            fontFamily: "NewAmsterdam"),
+                            fontFamily: "MarkoOne"),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 Row(
                   children: [
                     Text(
@@ -132,7 +142,11 @@ class GiveawayTile extends StatelessWidget {
                 const SizedBox(height: 16.0),
                 CustomButton(
                   text: "Grab The Loot 💸",
-                  onPress: () {},
+                  onPress: () {
+                    print("pressed");
+                    launchUrl(Uri.parse(url));
+                    print("launched");
+                  },
                   width: MediaQuery.sizeOf(context).width * 0.4,
                   height: 50,
                 )
